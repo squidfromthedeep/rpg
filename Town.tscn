@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cah8jlsnrtgab"]
+
+[ext_resource type="PackedScene" uid="uid://vlkeq06n7trr" path="res://Assets/Player/Player.tscn" id="1_t6p4r"]
+[ext_resource type="Script" path="res://Assets/Player/Camera_Follow.gd" id="2_nwbkp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rb8s1"]
+size = Vector2(49, 51)
+
+[node name="Town" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_t6p4r")]
+position = Vector2(50, 73)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(110, 67)
+shape = SubResource("RectangleShape2D_rb8s1")
+
+[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("2_nwbkp")
+player = NodePath("../Player")
