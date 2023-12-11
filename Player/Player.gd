@@ -3,6 +3,12 @@ extends CharacterBody2D
 @export var walk_speed = 4.0
 const TILE_SIZE = 16
 
+@onready
+var animation_tree = $AnimationTree
+
+@onready
+var animation_state = animation_tree.get("parameters/playback")
+
 func _ready():
 	pass
 
@@ -24,6 +30,11 @@ func process_player_input(delta):
 	if velocity != Vector2.ZERO:
 		velocity = velocity.normalized() * walk_speed
 		move_and_slide()
+		animation_state.travel("Walk")
+		animation_tree.set("parameters/Idle/blend_position", velocity)
+		animation_tree.set("parameters/Walk/blend_position", velocity)
+	else:
+		animation_state.travel("Idle")
 
 func _physics_process(delta):
 	process_player_input(delta)
