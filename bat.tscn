@@ -1,0 +1,158 @@
+[gd_scene load_steps=17 format=3 uid="uid://pd5wikvbrgnv"]
+
+[ext_resource type="Script" path="res://bat.gd" id="1_chy5l"]
+[ext_resource type="Texture2D" uid="uid://4u23t2uoi3v" path="res://Assets/bat-sprite.png" id="2_4w253"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_on70g"]
+radius = 9.0
+
+[sub_resource type="Animation" id="Animation_a267g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_6e0st"]
+resource_name = "flydown"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 2, 1]
+}
+
+[sub_resource type="Animation" id="Animation_clslp"]
+resource_name = "flyleft"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [13, 14, 15, 14, 13]
+}
+
+[sub_resource type="Animation" id="Animation_yixmh"]
+resource_name = "flyright"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [5, 6, 7, 6, 5]
+}
+
+[sub_resource type="Animation" id="Animation_o1qvd"]
+resource_name = "flyup"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [11, 10, 9, 10, 11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jd8ng"]
+_data = {
+"RESET": SubResource("Animation_a267g"),
+"flydown": SubResource("Animation_6e0st"),
+"flyleft": SubResource("Animation_clslp"),
+"flyright": SubResource("Animation_yixmh"),
+"flyup": SubResource("Animation_o1qvd")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_46acc"]
+animation = &"flyleft"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u8bat"]
+animation = &"flyright"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rm12o"]
+animation = &"flydown"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bo2wh"]
+animation = &"flyup"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_kqtxf"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_46acc")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_u8bat")
+blend_point_1/pos = Vector2(1, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_rm12o")
+blend_point_2/pos = Vector2(0, 1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_bo2wh")
+blend_point_3/pos = Vector2(0, -1)
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4j83n"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_r2y65"]
+states/Fly/node = SubResource("AnimationNodeBlendSpace2D_kqtxf")
+states/Fly/position = Vector2(448, 90)
+transitions = ["Start", "Fly", SubResource("AnimationNodeStateMachineTransition_4j83n")]
+
+[node name="Bat" type="CharacterBody2D"]
+script = ExtResource("1_chy5l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_on70g")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_4w253")
+hframes = 4
+vframes = 4
+frame = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_jd8ng")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_jd8ng")
+}
+tree_root = SubResource("AnimationNodeStateMachine_r2y65")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Fly/blend_position = Vector2(-0.241997, 0.0143886)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=28 format=3 uid="uid://vlkeq06n7trr"]
+[gd_scene load_steps=29 format=3 uid="uid://vlkeq06n7trr"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_d3vbg"]
+[ext_resource type="PackedScene" uid="uid://1d5445uo3o3j" path="res://fireball.tscn" id="2_pf6ck"]
 [ext_resource type="Texture2D" uid="uid://d33ijqyyljkca" path="res://Player/Male_Spritesheet.png" id="2_sdj7h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m503e"]
@@ -402,13 +403,13 @@ transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_d3vbg")
 walk_speed = 30.0
+fireball_scene = ExtResource("2_pf6ck")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_m503e")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 1
 position = Vector2(4.76837e-07, 0.5)
 texture = ExtResource("2_sdj7h")
 offset = Vector2(0, 1)

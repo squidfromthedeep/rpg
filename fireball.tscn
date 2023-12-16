@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://1d5445uo3o3j"]
+
+[ext_resource type="Script" path="res://missile.gd" id="1_1s8pf"]
+[ext_resource type="SpriteFrames" uid="uid://c0ciqnys3lnkc" path="res://Assets/Sprites.tres" id="1_yt5av"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fpv0r"]
+
+[node name="Fireball" type="AnimatableBody2D"]
+script = ExtResource("1_1s8pf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_yt5av")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_fpv0r")
